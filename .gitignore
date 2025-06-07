@@ -1,0 +1,48 @@
+# ملفات النظام
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ملفات المحرر
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ملفات PHP
+*.log
+error_log
+
+# ملفات قاعدة البيانات المؤقتة
+*.sql.backup
+*.db
+
+# ملفات الرفع (يمكن إزالة هذا السطر إذا كنت تريد رفع الصور)
+uploads/*
+!uploads/.gitkeep
+
+# ملفات التكوين الحساسة (إذا كانت تحتوي على كلمات مرور حقيقية)
+# config.php
+
+# ملفات الاختبار المؤقتة
+test_*.php
+temp_*.php
+
+# ملفات النسخ الاحتياطية
+*.bak
+*.backup
+
+# ملفات الضغط
+*.zip
+*.rar
+*.tar.gz
+
+# ملفات Node.js (إذا كنت تستخدمها لاحقاً)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# ملفات Composer (إذا كنت تستخدمها لاحقاً)
+vendor/
+composer.lock
