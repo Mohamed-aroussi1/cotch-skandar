@@ -34,11 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         $errors[] = 'البريد الإلكتروني غير صحيح';
     }
     
-    // التحقق من تغيير كلمة المرور
+    // التحقق من تغيير كلمة المرور (بدون تشفير)
     if (!empty($new_password)) {
         if (empty($current_password)) {
             $errors[] = 'يرجى إدخال كلمة المرور الحالية';
-        } elseif (!password_verify($current_password, $user['password'])) {
+        } elseif ($current_password !== $user['password']) {
             $errors[] = 'كلمة المرور الحالية غير صحيحة';
         } elseif (strlen($new_password) < 6) {
             $errors[] = 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل';
@@ -59,10 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     if (empty($errors)) {
         try {
             if (!empty($new_password)) {
-                // تحديث مع كلمة المرور الجديدة
-                $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+                // تحديث مع كلمة المرور الجديدة (بدون تشفير)
                 $stmt = $pdo->prepare("UPDATE users SET full_name = ?, email = ?, password = ? WHERE id = ?");
-                $stmt->execute([$full_name, $email, $hashed_password, $_SESSION['user_id']]);
+                $stmt->execute([$full_name, $email, $new_password, $_SESSION['user_id']]);
             } else {
                 // تحديث بدون كلمة المرور
                 $stmt = $pdo->prepare("UPDATE users SET full_name = ?, email = ? WHERE id = ?");

@@ -166,44 +166,43 @@ function uploadFile($file, $event_id, $pdo) {
     return ['success' => false, 'message' => 'فشل في رفع الملف'];
 }
 
-// دالة لتسجيل المستخدم
+// دالة لتسجيل المستخدم (بدون تشفير)
 function registerUser($pdo, $data) {
     // التحقق من وجود المستخدم
     $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
     $stmt->execute([$data['username'], $data['email']]);
-    
+
     if ($stmt->fetch()) {
         return ['success' => false, 'message' => 'اسم المستخدم أو البريد الإلكتروني موجود مسبقاً'];
     }
-    
-    // إضافة المستخدم الجديد
-    $hashed_password = password_hash($data['password'], PASSWORD_DEFAULT);
+
+    // إضافة المستخدم الجديد (كلمة المرور بدون تشفير)
     $stmt = $pdo->prepare("
         INSERT INTO users (username, email, password, full_name)
         VALUES (?, ?, ?, ?)
     ");
-    
-    if ($stmt->execute([$data['username'], $data['email'], $hashed_password, $data['full_name']])) {
+
+    if ($stmt->execute([$data['username'], $data['email'], $data['password'], $data['full_name']])) {
         return ['success' => true, 'message' => 'تم التسجيل بنجاح'];
     }
-    
+
     return ['success' => false, 'message' => 'فشل في التسجيل'];
 }
 
-// دالة لتسجيل الدخول
+// دالة لتسجيل الدخول (بدون تشفير)
 function loginUser($pdo, $username, $password) {
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
     $stmt->execute([$username, $username]);
     $user = $stmt->fetch();
-    
-    if ($user && password_verify($password, $user['password'])) {
+
+    if ($user && $password === $user['password']) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['full_name'] = $user['full_name'];
         $_SESSION['user_type'] = $user['user_type'];
         return ['success' => true, 'message' => 'تم تسجيل الدخول بنجاح'];
     }
-    
+
     return ['success' => false, 'message' => 'اسم المستخدم أو كلمة المرور غير صحيحة'];
 }
 

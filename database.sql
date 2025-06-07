@@ -64,9 +64,9 @@ CREATE TABLE user_calendar (
     UNIQUE KEY unique_user_event (user_id, event_id)
 );
 
--- إدراج مستخدم إداري افتراضي (كلمة المرور: password)
+-- إدراج مستخدم إداري افتراضي (كلمة المرور: password - بدون تشفير)
 INSERT INTO users (username, email, password, full_name, user_type) VALUES
-('admin', 'admin@sport.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'مدير النظام', 'admin');
+('admin', 'admin@sport.com', 'password', 'مدير النظام', 'admin');
 
 -- إدراج بعض الأحداث التجريبية
 INSERT INTO events (title, description, event_date, event_time, sport_type, location, created_by, assigned_to, is_public) VALUES
